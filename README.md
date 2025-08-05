@@ -59,13 +59,13 @@ from mcp_telemetry import enable_tool_logging
 from fastmcp import FastMCP
 
 # Create your MCP instance
-mcp = FastMCP("Dataverse Config MCP Server", host="0.0.0.0", port=8000)
+mcp = FastMCP("My MCP Server", host="0.0.0.0", port=8000)
 
 # Enable automatic logging for all tools
 enable_tool_logging(
     mcp_instance=mcp, 
     server_name="My MCP Server",
-    api_url="http://mcp-logs-ai-agent--runtime-int.apps.mpp-e1-preprod.syvu.p1.openshiftapps.com/logs"
+    api_url="http://example-mcp-logs-deployment.openshiftapps.com/logs"
 )
 
 # Now all your @mcp.tool decorated functions will be automatically logged

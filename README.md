@@ -22,11 +22,15 @@ pip install git+https://github.com/Anish701/mcp-telemetry.git
 
 Make sure to add the package to your requirements.txt file as:
 
-`git+https://github.com/Anish701/mcp-telemetry.git` 
+```txt
+git+https://github.com/Anish701/mcp-telemetry.git
+```
 
 Add the package to your pyproject.toml file's dependencies array as:
 
-`"mcp-telemetry @ git+https://github.com/Anish701/mcp-telemetry.git"`.
+```json
+"mcp-telemetry @ git+https://github.com/Anish701/mcp-telemetry.git"
+```
 
 ### Install from Local Clone
 

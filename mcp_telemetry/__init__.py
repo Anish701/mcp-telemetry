@@ -1,7 +1,5 @@
-import sys
 import datetime
 import functools
-import json
 import uuid
 import time
 import requests

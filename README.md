@@ -10,8 +10,6 @@ A Python package for logging MCP (Model Context Protocol) tool calls with detail
 - **JSON Output**: Structured logging output for easy parsing and analysis
 - **Error Handling**: Graceful error handling with fallback logging to stderr
 
-## Installation
-
 ### Install from GitHub
 
 You can install this package directly from GitHub using pip:

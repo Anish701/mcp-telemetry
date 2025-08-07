@@ -14,7 +14,7 @@ A Python package for logging MCP (Model Context Protocol) tool calls with detail
 
 Add the package to your pyproject.toml file's dependencies array as:
 
-```toml
+```json
 "mcp-telemetry @ git+https://github.com/Anish701/mcp-telemetry.git"
 ```
 

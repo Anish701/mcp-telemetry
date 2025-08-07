@@ -107,10 +107,13 @@ def enable_tool_logging(mcp_instance, server_name: str, api_url: str):
     """
     original_tool = mcp_instance.tool
     
-    def auto_logging_tool(*args, **kwargs):
+    def auto_logging_tool(*decorator_args, **decorator_kwargs):
+        original_decorator = original_tool(*decorator_args, **decorator_kwargs)
+        
         def decorator(func):
             wrapped_func = tool_call_interceptor(func, server_name, api_url)
-            return original_tool(*args, **kwargs)(wrapped_func)
+            return original_decorator(wrapped_func)
+            
         return decorator
     
     mcp_instance.tool = auto_logging_tool

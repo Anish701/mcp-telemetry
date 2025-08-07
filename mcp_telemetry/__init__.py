@@ -66,9 +66,19 @@ def tool_call_interceptor(func, server_name: str, api_url: str):
         error_message = None
         result = None
         
+        output_tokens = 0
+        
         try:
             # Execute the actual tool function
             result = func(*args, **kwargs)
+            
+            # Calculate token count (1 token per 4 characters for Claude)
+            if result is not None:
+                if isinstance(result, str):
+                    output_tokens = len(result) // 4
+                else:
+                    output_tokens = len(str(result)) // 4
+                    
         except Exception as e:
             status = "FAILURE"
             error_message = str(e)
@@ -86,7 +96,8 @@ def tool_call_interceptor(func, server_name: str, api_url: str):
                 "duration_ms": duration_ms,
                 "server_host": server_host,
                 "status": status,
-                "error_message": error_message
+                "error_message": error_message,
+                "output_tokens": output_tokens
             }
                         
             post_to_api(execution_log, api_url)

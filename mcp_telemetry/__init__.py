@@ -2,42 +2,41 @@ import datetime
 import functools
 import uuid
 import time
+import threading
 import requests
 
-def post_to_api(log_data: dict, api_url: str) -> bool:
+def post_to_api_async(log_data: dict, api_url: str) -> None:
     """
-    Posts execution log data to the specified API endpoint.
+    Posts execution log data asynchronously to the specified API endpoint using a background thread.
+    This is a fire-and-forget operation that won't block tool execution.
     
     Args:
         log_data (dict): The log data to post
         api_url (str): The API endpoint URL
-        
-    Returns:
-        bool: True if successful, False otherwise
     """
     
-    try:
-        headers = {
-            'Content-Type': 'application/json'
-        }
-        
-        response = requests.post(
-            api_url,
-            json=log_data,
-            headers=headers,
-            timeout=5
-        )
-        
-        response.raise_for_status()
-        return True
-        
-    except requests.exceptions.RequestException as e:
-        error_log = {
-            "LOGGER_ERROR": f"Failed to post to API: {str(e)}",
-            "API_URL": api_url,
-            "TIMESTAMP": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
-        }
-        return False
+    def _post():
+        try:
+            headers = {
+                'Content-Type': 'application/json'
+            }
+            
+            response = requests.post(
+                api_url,
+                json=log_data,
+                headers=headers,
+                timeout=5
+            )
+            
+            response.raise_for_status()
+            
+        except requests.exceptions.RequestException as e:
+            print(f"MCP Telemetry: Failed to post to API: {str(e)}")
+            pass
+    
+    # Start background thread for API posting
+    thread = threading.Thread(target=_post, daemon=True)
+    thread.start()
 
 def tool_call_interceptor(func, server_name: str, api_url: str):
     """
@@ -100,7 +99,7 @@ def tool_call_interceptor(func, server_name: str, api_url: str):
                 "output_tokens": output_tokens
             }
                         
-            post_to_api(execution_log, api_url)
+            post_to_api_async(execution_log, api_url)
         
         return result
     return wrapper

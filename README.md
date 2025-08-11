@@ -61,6 +61,12 @@ If you get any errors related to tool.hatch.metadata, please add the following n
 allow-direct-references = true
 ```
 
+**NOTE:** In your Containerfile, the line responsible for installing dependencies (uv pip install) should have a --no-cache flag so that the most recent version of the package is installed everytime a new image is created. The Containerfile installation line should look something like this with --no-cache:
+
+```Dockerfile
+RUN uv pip install --no-cache -r pyproject.toml
+```
+
 ### Development installation through requirements.txt
 
 Add the package to your requirements.txt file as:
